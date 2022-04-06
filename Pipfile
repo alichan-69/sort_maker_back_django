@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "*"
+djangorestframework = "*"
+django-filter = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.9"
+
+[scripts]
+create-superuser = "python manage.py createsuperuser"
+migrate = "bash -c 'python manage.py makemigrations && python manage.py migrate'"
+start = "python manage.py runserver"
