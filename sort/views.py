@@ -1,10 +1,10 @@
-from .serializer import SortSerializer
-from .models import Sort
+from .serializer import SortSerializer, SortItemSerializer
+from .models import Sort, SortItem
 from rest_framework import viewsets, mixins
 
 from common.response import create_api_response
 from common.validation import check_exist_key, check_value_format
-from common.format import date_format
+from common.format import format_date
 from common.exception import APIException
 from common.auth import authenticate_register_user
 
@@ -27,7 +27,15 @@ def destroy_sort(self, request, pk):
 
     # その他データベースに登録する値を変数に格納
     delete_flg = True
-    update_date = date_format(datetime.datetime.now())
+    update_date = format_date(datetime.datetime.now())
+
+    # ソートを削除する
+    instance = self.get_object()
+    instance.delete_flg = delete_flg
+    instance.update_date = update_date
+    instance.save()
+
+    # ソートアイテムを削除する
 
 
 class SortViewSet(viewsets.ModelViewSet, mixins.DestroyModelMixin):
@@ -44,3 +52,8 @@ class SortViewSet(viewsets.ModelViewSet, mixins.DestroyModelMixin):
             return create_api_response(e.status_code, e.message)
         except Exception as e:
             return create_api_response(500, traceback.format_exc())
+
+
+class SortItemViewSet(viewsets.ModelViewSet, mixins.DestroyModelMixin):
+    queryset = SortItem.objects.all()
+    serializer_class = SortItemSerializer
