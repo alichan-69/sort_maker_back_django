@@ -30,12 +30,17 @@ def destroy_sort(self, request, pk):
     update_date = format_date(datetime.datetime.now())
 
     # ソートを削除する
-    instance = self.get_object()
-    instance.delete_flg = delete_flg
-    instance.update_date = update_date
-    instance.save()
+    sort_instance = self.get_object()
+    sort_instance.delete_flg = delete_flg
+    sort_instance.update_date = update_date
+    sort_instance.save()
 
     # ソートアイテムを削除する
+    sort_item_instances = SortItem.objects.filter(sort=pk)
+    for sort_item_instance in sort_item_instances:
+        sort_item_instance.delete_flg = delete_flg
+        sort_item_instance.update_date = update_date
+        sort_item_instance.save()
 
 
 class SortViewSet(viewsets.ModelViewSet, mixins.DestroyModelMixin):
