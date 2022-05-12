@@ -1,5 +1,5 @@
-from .serializer import SortSerializer, SortItemSerializer
-from .models import Sort, SortItem
+from .serializer import UserSerializer, SortSerializer, SortItemSerializer, LikeSerializer
+from .models import User, Sort, SortItem, Like
 from rest_framework import viewsets, mixins
 
 from common.response import create_api_response
@@ -43,6 +43,11 @@ def destroy_sort(self, request, pk):
         sort_item_instance.save()
 
 
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
 class SortViewSet(viewsets.ModelViewSet, mixins.DestroyModelMixin):
     queryset = Sort.objects.all()
     serializer_class = SortSerializer
@@ -59,6 +64,11 @@ class SortViewSet(viewsets.ModelViewSet, mixins.DestroyModelMixin):
             return create_api_response(500, traceback.format_exc())
 
 
-class SortItemViewSet(viewsets.ModelViewSet, mixins.DestroyModelMixin):
+class SortItemViewSet(viewsets.ModelViewSet):
     queryset = SortItem.objects.all()
     serializer_class = SortItemSerializer
+
+
+class LikeViewSet(viewsets.ModelViewSet):
+    queryset = Like.objects.all()
+    serializer_class = LikeSerializer
