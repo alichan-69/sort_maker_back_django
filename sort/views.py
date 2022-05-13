@@ -10,6 +10,10 @@ from common.operate_instance import delete_instance
 import traceback
 
 
+def create_sort(self, request):
+    print('hello')
+
+
 def destroy_sort(self, request, pk):
 
     # ソートを削除する
@@ -27,9 +31,20 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
 
-class SortViewSet(viewsets.ModelViewSet, mixins.DestroyModelMixin):
+class SortViewSet(viewsets.ModelViewSet, mixins.CreateModelMixin, mixins.DestroyModelMixin):
     queryset = Sort.objects.all()
     serializer_class = SortSerializer
+
+    def create(self, request):
+        try:
+            body = request.data
+            authenticate_register_user(self, body)
+            create_sort(self, request)
+            return create_api_response(200, "OK")
+        except APIException as e:
+            return create_api_response(e.status_code, e.message)
+        except Exception as e:
+            return create_api_response(500, traceback.format_exc())
 
     def destroy(self, request, pk=None):
         try:
