@@ -2,7 +2,7 @@ from common.format import format_date
 
 import datetime
 
-# modelのインスタンスの操作
+# modelのインスタンスの削除
 
 
 def delete_instance(model, id_name, pk):
