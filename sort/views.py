@@ -4,7 +4,7 @@ from rest_framework import viewsets, mixins
 
 from common.response import create_api_response
 from common.exception import APIException
-from common.auth import authenticate_register_user
+from common.auth import authenticate_user, authenticate_register_user
 from common.operate_instance import delete_instance
 
 import traceback
@@ -38,7 +38,7 @@ class SortViewSet(viewsets.ModelViewSet, mixins.CreateModelMixin, mixins.Destroy
     def create(self, request):
         try:
             body = request.data
-            authenticate_register_user(self, body)
+            authenticate_user(body)
             create_sort(self, request)
             return create_api_response(200, "OK")
         except APIException as e:
