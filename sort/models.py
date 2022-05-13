@@ -4,7 +4,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator, MinLeng
 
 class User(models.Model):
     id = models.CharField(
-        primary_key=True, editable=False, max_length=255, validators=[MinLengthValidator(1)])
+        primary_key=True, max_length=255, validators=[MinLengthValidator(1)])
     name = models.CharField(max_length=255, validators=[MinLengthValidator(1)])
     access_token = models.CharField(
         max_length=255, validators=[MinLengthValidator(1)])
@@ -22,7 +22,7 @@ class Sort(models.Model):
     description = models.CharField(
         max_length=255, validators=[MinLengthValidator(1)])
     play_count = models.IntegerField(default=0,
-                                     validators=[MinValueValidator(1), MaxValueValidator(99999999999)])
+                                     validators=[MinValueValidator(0), MaxValueValidator(99999999999)])
     user = models.ForeignKey(
         User, related_name='sorts', on_delete=models.CASCADE)
     delete_flg = models.BooleanField(default=False)
