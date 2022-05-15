@@ -3,7 +3,7 @@ from sort.models import User
 from common.validation import check_exist_key, check_value_format
 from .exception import APIException
 
-a = 1
+a = 2
 
 # ユーザー認証
 
