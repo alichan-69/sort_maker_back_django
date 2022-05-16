@@ -2,6 +2,7 @@ from .serializer import UserSerializer, SortSerializer, SortItemSerializer, Like
 from .models import User, Sort, SortItem, Like
 from rest_framework import viewsets, mixins
 
+from common.validation import check_exist_key, check_value_format
 from common.response import create_api_response
 from common.exception import APIException
 from common.auth import authenticate_user, authenticate_register_user
@@ -11,10 +12,17 @@ import traceback
 
 
 def create_sort(self, request):
-    print('hello')
+    post = request.data
+
+    # ポストされたデータの必須キーの存在チェック
+    required_keys = ["name", "description", "item_names"]
+    check_exist_key(required_keys, post)
+
+    # バリデーション
+    check_value_format(post)
 
 
-def destroy_sort(self, request, pk):
+def destroy_sort(pk):
 
     # ソートを削除する
     delete_instance(Sort, "id", pk)
@@ -37,8 +45,7 @@ class SortViewSet(viewsets.ModelViewSet, mixins.CreateModelMixin, mixins.Destroy
 
     def create(self, request):
         try:
-            body = request.data
-            authenticate_user(body)
+            authenticate_user(request)
             create_sort(self, request)
             return create_api_response(200, "OK")
         except APIException as e:
@@ -48,9 +55,9 @@ class SortViewSet(viewsets.ModelViewSet, mixins.CreateModelMixin, mixins.Destroy
 
     def destroy(self, request, pk=None):
         try:
-            body = request.data
-            authenticate_register_user(self, body)
-            destroy_sort(self, request, pk)
+            authenticate_user(request)
+            authenticate_register_user(self, request)
+            destroy_sort(pk)
             return create_api_response(200, "OK")
         except APIException as e:
             return create_api_response(e.status_code, e.message)

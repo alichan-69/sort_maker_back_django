@@ -6,7 +6,9 @@ from .exception import APIException
 # ユーザー認証
 
 
-def authenticate_user(post: dict):
+def authenticate_user(request):
+    post = request.data
+
     # ポストされたデータの必須キーの存在チェック
     required_keys = ["user_id"]
     check_exist_key(required_keys, post)
@@ -25,7 +27,9 @@ def authenticate_user(post: dict):
 # ソートを登録したユーザーかの認証
 
 
-def authenticate_register_user(self, post: dict):
+def authenticate_register_user(self, request):
+    post = request.data
+
     # ポストされたデータの必須キーの存在チェック
     required_keys = ["user_id"]
     check_exist_key(required_keys, post)
