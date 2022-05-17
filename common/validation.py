@@ -13,7 +13,7 @@ FORMAT = {
     "user_id": {"type": str, "min": 1, "max": 255},
     "name": {"type": str, "min": 1, "max": 255},
     "description":  {"type": str, "min": 1, "max": 255},
-    "item_names": {"type": list, "element_type": str, "min": 1, "max": 255}
+    "item_names": {"type": list, "element_type": str, "min": 1, "max": 255, "min_length": 1, "max_length": 100, }
 }
 
 # キーに対するフォーマット（タイプ・文字数制限など）の確認
@@ -28,7 +28,7 @@ def check_value_format(post: dict):
                 raise APIException(500, "{}のフォーマットが正しくありませんでした".format(key))
         elif format["type"] == list:
             # リスト型の場合
-            if not isinstance(post[key], list):
+            if not (isinstance(post[key], list) and format["min_length"] <= len(post[key]) <= format["max"]):
                 raise APIException(500, "{}のフォーマットが正しくありませんでした".format(key))
 
             for el in post[key]:
