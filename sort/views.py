@@ -21,6 +21,15 @@ def create_sort(self, request):
     # バリデーション
     check_value_format(post)
 
+    # ソートを登録する
+    sort = Sort(
+        name=post["name"], description=post["description"], user_id=post["user_id"])
+    sort.save()
+
+    # ソートアイテムを登録する
+    # for item_name in post["item_names"]:
+    #     item_instance = SortItem.get
+
 
 def destroy_sort(pk):
 
