@@ -47,6 +47,10 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+    def create(self, request):
+        print(repr(request))
+        return create_api_response(200, "OK")
+
 
 class SortViewSet(viewsets.ModelViewSet, mixins.CreateModelMixin, mixins.DestroyModelMixin):
     queryset = Sort.objects.all()
